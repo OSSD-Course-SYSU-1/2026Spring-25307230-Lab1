@@ -123,10 +123,13 @@ export struct AvPlayer {
       }
       await this.setAVPlayerCallback();
 
-      if (this.videoUri !== '') {
+      if (this.videoUri !== '' && !this.videoUri.startsWith('internal://')) {
         this.avPlayer.url = this.videoUri;
       } else {
-        const videoFd = await this.context.resourceManager.getRawFd('sample.mp4');
+        const videoFileName = this.videoUri.startsWith('internal://')
+          ? this.videoUri.substring('internal://'.length)
+          : 'sample.mp4';
+        const videoFd = await this.context.resourceManager.getRawFd(videoFileName);
         const avFileDescriptor: media.AVFileDescriptor = {
           fd: videoFd.fd,
           offset: videoFd.offset,

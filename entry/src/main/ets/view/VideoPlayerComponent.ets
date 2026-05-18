@@ -77,7 +77,11 @@ export struct VideoPlayer {
   build() {
     Column() {
       Video({
-        src: this.videoUri !== '' ? this.videoUri : $rawfile('sample.mp4'),
+        src: this.videoUri !== '' && !this.videoUri.startsWith('internal://')
+          ? this.videoUri
+          : $rawfile(this.videoUri.startsWith('internal://') 
+              ? this.videoUri.substring('internal://'.length) 
+              : 'sample.mp4'),
         currentProgressRate: this.currentPlaybackSpeed,
         controller: this.controller
       })

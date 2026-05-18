@@ -167,19 +167,33 @@ struct Index {
       .alignItems(HorizontalAlign.Start)
 
       Column({ space: 12 }) {
-        Button($r('app.string.select_video'))
-          .fontWeight(500)
-          .fontSize(16)
-          .width('50%')
-          .fontColor(Color.White)
-          .backgroundColor('rgb(10,89,247)')
-          .onClick(async () => {
-            const result = await VideoPickerUtil.selectVideo();
-            if (result) {
-              this.videoUri = result.uri;
-              Logger.info(LOG_TAG, `Video selected: ${result.uri}`);
-            }
-          })
+        Row({ space: 12 }) {
+          Button($r('app.string.select_video'))
+            .fontWeight(500)
+            .fontSize(16)
+            .layoutWeight(1)
+            .fontColor(Color.White)
+            .backgroundColor('rgb(10,89,247)')
+            .onClick(async () => {
+              const result = await VideoPickerUtil.selectVideo();
+              if (result) {
+                this.videoUri = result.uri;
+                Logger.info(LOG_TAG, `Video selected: ${result.uri}`);
+              }
+            })
+
+          Button('使用默认视频')
+            .fontWeight(500)
+            .fontSize(16)
+            .layoutWeight(1)
+            .fontColor(Color.White)
+            .backgroundColor('rgb(46,139,87)')
+            .onClick(() => {
+              this.videoUri = 'internal://video_sample_product.mp4';
+              Logger.info(LOG_TAG, 'Default video selected');
+            })
+        }
+        .width('50%')
 
         if (this.isRecognizing) {
           Row({ space: 8 }) {
